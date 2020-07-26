@@ -203,7 +203,11 @@ call plug#begin('~/.config/nvim/plugged')
 
 " Pretty Dress
 Plug 'bling/vim-bufferline'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'dracula/vim'
 
+Plug 'kevinhwang91/rnvimr', {'do': 'make sync'}
 " 批注插件
 Plug 'scrooloose/nerdcommenter' " in <space>cc to comment a line
 " cs替换包裹字符
@@ -651,3 +655,56 @@ xnoremap <LEADER>al; :AnyJumpLastResults<CR>
 " 	exec "e ~/.config/nvim/_machine_specific.vim"
 " endif
 
+" ===
+" === vim-airline
+" ===
+let g:airline_theme='dracula'
+let g:airline#extensions#tabline#buffer_nr_show=1
+
+
+"" ===
+"" === rnvimr
+"" ===
+"let g:rnvimr_ex_enable = 1
+"let g:rnvimr_pick_enable = 1
+"let g:rnvimr_draw_border = 0
+"" let g:rnvimr_bw_enable = 1
+"highlight link RnvimrNormal CursorLine
+"nnoremap <silent> R :RnvimrSync<CR>:RnvimrToggle<CR><C-\><C-n>:RnvimrResize 0<CR>
+"let g:rnvimr_action = {
+            "\ '<C-t>': 'NvimEdit tabedit',
+            "\ '<C-x>': 'NvimEdit split',
+            "\ '<C-v>': 'NvimEdit vsplit',
+            "\ 'gw': 'JumpNvimCwd',
+            "\ 'yw': 'EmitRangerCwd'
+            "\ }
+"let g:rnvimr_layout = { 'relative': 'editor',
+            "\ 'width': &columns,
+            "\ 'height': &lines,
+            "\ 'col': 0,
+            "\ 'row': 0,
+            "\ 'style': 'minimal' }
+"let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
+
+" ===
+" === fcitx5-vim
+" ===
+let g:input_toggle = 1
+function! Fcitx2en()
+   let s:input_status = system("fcitx5-remote")
+   if s:input_status == 2
+      let g:input_toggle = 1
+      let l:a = system("fcitx5-remote -c")
+   endif
+endfunction
+function! Fcitx2zh()
+   let s:input_status = system("fcitx5-remote")
+   if s:input_status != 2 && g:input_toggle == 1
+      let l:a = system("fcitx5-remote -o")
+      let g:input_toggle = 0
+   endif
+endfunction
+
+set timeoutlen=150
+autocmd InsertLeave * call Fcitx2en()
+"autocmd InsertEnter * call Fcitx2zh()
