@@ -1,0 +1,3 @@
+acpitool
+deepin-wine-wechat
+ttf-symbola
